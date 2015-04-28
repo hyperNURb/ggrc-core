@@ -1111,7 +1111,10 @@
           });
       }
 
-    , get_instance_from_mapping: function(binding, mapping) {
+    , get_instance_from_mapping: function (binding, mapping) {
+        if (!mapping[this.option_attr]) {
+          return;
+        }
         return mapping[this.option_attr].reify();
       }
 
