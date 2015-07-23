@@ -641,6 +641,10 @@ i.short {
 
 .quick-list {
   .icon-wrap {
+    color: #fff;
+    .fa {
+      color: #fff;
+    }
     @extend %white-icons;
   }
   .dropdown-menu {

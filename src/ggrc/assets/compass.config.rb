@@ -28,6 +28,7 @@ additional_import_paths = [
   "assets/stylesheets",
   "assets/vendor/stylesheets",
   "assets/vendor/bootstrap-sass/vendor/assets/stylesheets",
+  "assets/vendor/font-awesome/scss",
   ]
 
 sass_dir = "assets/stylesheets"

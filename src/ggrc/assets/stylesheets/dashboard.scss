@@ -24,6 +24,9 @@
 @import "bootstrap-responsive";
 
 @import "compass/css3";
+$fa-font-path: "/static/fonts/";
+@import "font-awesome";
+
 //@import "bootstrap-wysihtml5-0.0.2";
 
 @import "setup";
@@ -65,7 +68,7 @@
 
   // bootstrap rewrites
   @import "rewrite";
-  
+
   // global definitions
   @import "global";
 
@@ -84,7 +87,7 @@
 
   // SVG graphing
   @import "graph";
-  
+
   // icons
   @import "icons";
 
