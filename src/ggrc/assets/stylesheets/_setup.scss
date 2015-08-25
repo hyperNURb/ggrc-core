@@ -160,8 +160,10 @@ $bar-danger: #ffffbe;
 $bar-warning: #ffcebe;
 
 // Web fonts
+@import url(https://fonts.googleapis.com/css?family=Raleway);
+
 $font_path: "/static/fonts/";
-$font_name: "raleway-regular-webfont";
+$font_name: "Raleway", sans-serif;
 
 $fontTitle: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
