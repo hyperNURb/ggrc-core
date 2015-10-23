@@ -768,7 +768,7 @@
             mapping: "related_audits",
             draw_children: true,
             allow_creating: false,
-            allow_mapping: false,
+            allow_mapping: true,
             show_view: GGRC.mustache_path + "/audits/tree.mustache"
           },
           Section: {
