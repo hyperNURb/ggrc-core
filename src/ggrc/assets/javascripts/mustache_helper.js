@@ -415,6 +415,16 @@ Mustache.registerHelper("render", function (template, context, options) {
   return ret;
 });
 
+function checkPendingHookups (context) {
+  setTimeout(function () {
+    context._pending_hookups.replace(_.filter(context._pending_hookups, function (hookup) {
+      return can.view.hookups[hookup];
+    }));
+    if (context._pending_hookups.length) {
+      return checkPendingHookups(context);
+    }
+  }, 13);
+}
 // Like 'render', but doesn't serialize the 'context' object, and doesn't
 // apply options.hash
 Mustache.registerHelper("renderLive", function (template, context, options) {
@@ -436,8 +446,19 @@ Mustache.registerHelper("renderLive", function (template, context, options) {
   if (options.hash) {
     options.contexts = options.contexts.add(options.hash);
   }
+  var html = can.view.render(template, options.contexts),
+      rHookup = /view\-id=\'(\d+)\'/gi;
 
-  return can.view.render(template, options.contexts);
+  if (rHookup.test(html)) {
+    if (!context._pending_hookups) {
+      context._pending_hookups = new can.List();
+    }
+    context._pending_hookups.replace(can.map(html.match(rHookup), function (id) {
+      return parseInt(id.replace(/^\D+/g, ""), 10);
+    }));
+    checkPendingHookups(context);
+  }
+  return html;
 });
 
 // Renders one or more "hooks", which are templates registered under a
@@ -455,6 +476,15 @@ Mustache.registerHelper("render_hooks", function () {
   return can.map(can.getObject(hook, GGRC.hooks) || [], function (hook_tmpl) {
     return can.Mustache.getHelper("renderLive", options.contexts).fn(hook_tmpl, options.contexts, options);
   }).join("\n");
+});
+
+Mustache.registerHelper("renderDisable", function (options) {
+  if (!this._pending_hookups) {
+    this._pending_hookups = new can.List();
+  }
+  this._pending_hookups.bind("length", function (ev, len) {
+
+  });
 });
 
 // Checks whether any hooks are registered for a particular key
