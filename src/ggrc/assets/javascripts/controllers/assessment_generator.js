@@ -12,14 +12,22 @@ can.Component.extend({
     audit: null
   },
   events: {
-    'a click': function() {
+    'a click': function(el) {
       if (this.scope.loading) {
         return;
       }
-      this._generate_control_assessments();
+      GGRC.Controllers.MapperModal.launch(el, {
+        "object": 'Audit',
+        "type": 'Control',
+        "join-object-id": this.scope.audit.id,
+        "search-only": 'false',
+        "join-mapping": 'program_controls',
+        "generate-assessments": 'true',
+        "assessments-callback": this._generate_control_assessments.bind(this),
+      });
     },
 
-    _generate_control_assessments: function(controls) {
+    _generate_control_assessments: function(selected_controls) {
       var assessments_list = this.scope.audit.get_binding("related_control_assessments").list,
           controls_list = this.scope.audit.get_binding("program_controls").list,
           assessments_dfd = this._refresh(assessments_list),
@@ -31,6 +39,11 @@ can.Component.extend({
         var related_controls_dfd = $.when.apply($, can.map(assessments, function(assessment) {
           return assessment.refresh_all("related_controls");
         }));
+        if (selected_controls) {
+          controls = _.map(selected_controls, function(control) {
+            return control.reify();
+          });
+        }
         return $.when(assessments, controls, related_controls_dfd);
       }).then(function (assessments, controls) {
         ignore_controls = _.map(assessments, function(ca) {

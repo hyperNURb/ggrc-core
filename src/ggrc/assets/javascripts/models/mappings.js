@@ -605,7 +605,7 @@
         "requests": "Request",
         "_program": "Program",
         "context": "Context",
-        "related_objects_as_source": ["ControlAssessment", "Issue"]
+        "related_objects_as_source": ["Control", "ControlAssessment", "Issue"]
       },
       folders: Proxy(
         "ObjectFolder", "folderable", "folder",

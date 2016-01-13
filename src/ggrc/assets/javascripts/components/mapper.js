@@ -21,6 +21,8 @@
       is_saving: false,
       all_selected: false,
       search_only: false,
+      generate_assessments: false,
+      assessments_callback: null,
       join_object_id: "",
       selected: new can.List(),
       entries: new can.List(),
@@ -124,6 +126,12 @@
       if ($el.attr("search-only")) {
         data["search_only"] =  /true/i.test($el.attr("search-only"));
       }
+      if (parentScope.attr('generate-assessments')) {
+        data['generate_assessments'] = /true/i.test(parentScope.attr('generate-assessments'));
+      }
+      if (parentScope.attr('assessments-callback')) {
+        data['assessments_callback'] = parentScope.attr('assessments-callback');
+      }
       if (object) {
         data["object"] = object;
       }
@@ -190,6 +198,7 @@
         if (el.hasClass("disabled")) {
           return;
         }
+
         // TODO: Figure out nicer / proper way to handle deferred save
         if (this.scope.attr("deferred")) {
           return this.deferredSave();
@@ -200,7 +209,14 @@
             isAllObject = type === "AllObject",
             instance = CMS.Models[object].findInCacheById(this.scope.attr("mapper.join_object_id")),
             mapping, Model, data = {}, defer = [],
-            que = new RefreshQueue();
+            que = new RefreshQueue(),
+            assessmentsCallback = this.scope.attr('mapper.assessments_callback');
+
+        // handle control assessments generation, if callback was specified
+        if (assessmentsCallback) {
+          this.element.find('.modal-dismiss').trigger('click');
+          assessmentsCallback(this.scope.attr('mapper.selected'));
+        }
 
         this.scope.attr("mapper.is_saving", true);
         que.enqueue(instance).trigger().done(function (inst) {
@@ -516,6 +532,11 @@
 
         return GGRC.Models.Search.search_for_types(data.term || "", data.model_name, data.options);
       },
+      "getProgramControls": function () {
+        var audit = GGRC.page_instance();
+        var binding = audit.get_binding('program_controls');
+        return binding.list;
+      },
       "getResults": function () {
         if (this.scope.attr("mapper.page_loading") || this.scope.attr("mapper.is_saving")) {
           return;
@@ -577,11 +598,20 @@
                   new GGRC.ListLoaders.IntersectingListLoader(search).attach()
                 : search[0];
 
-        list.refresh_stubs().then(function (options) {
-          this.scope.attr("mapper.page_loading", false);
-          this.scope.attr("entries", options);
+        if (this.scope.attr('mapper.generate_assessments')) {
+          // display only controls relevant to the audits program
+          this.scope.attr('mapper.page_loading', false);
+          this.scope.attr('entries', this.getProgramControls());
           this.drawPage();
-        }.bind(this));
+        } else {
+          list.refresh_stubs().then(function (options) {
+            this.scope.attr('mapper.page_loading', false);
+            this.scope.attr('entries', options);
+            this.drawPage();
+          }.bind(this));
+        }
+
+
       }
     }
   });

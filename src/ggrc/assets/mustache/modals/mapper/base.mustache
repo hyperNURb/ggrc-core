@@ -13,7 +13,11 @@
     {{#if mapper.search_only}}
     Search
     {{else}}
-    Map {{get_object}} to {{get_title}}
+      {{#if mapper.generate_assessments}}
+      Select controls to generate assessments
+      {{else}}
+      Map {{get_object}} to {{get_title}}
+      {{/if}}
     {{/if}}
   </h2>
 </div>
@@ -195,7 +199,11 @@
           {{#if mapper.is_saving}}
             Saving, please wait...
           {{else}}
+            {{#if mapper.generate_assessments}}
+            Generate Assessments
+            {{else}}
             Add Selected
+            {{/if}}
           {{/if}}
         </a>
       </div>
