@@ -42,7 +42,9 @@ ggrc_local_npm_modules:
   - name: sass-loader
   - name: css-loader
   - name: style-loader
-  - name: bootstrap-sass
+  - name: url-loader
+  - name: file-loader
+  - name: compass-mixins
   - name: font-awesome
   - name: extract-text-webpack-plugin
   - name: lodash

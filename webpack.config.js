@@ -31,12 +31,27 @@ module.exports = {
     dashboard: GGRC.get_dashboard_modules()
   },
   output: {
-    filename: '[name].js',
-    path: path.join(__dirname, './build'),
-    publicPath: '/build'
+    filename: '[name]_.js',
+    path: path.join(__dirname, './src/ggrc/static/'),
+    publicPath: '/src/ggrc/static/'
   },
   module: {
     loaders: [{
+      test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+      loader: 'url?limit=10000&mimetype=application/font-woff'
+    }, {
+      test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+      loader: 'url?limit=10000&mimetype=application/font-woff'
+    }, {
+      test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+      loader: 'url?limit=10000&mimetype=application/octet-stream'
+    }, {
+      test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+      loader: 'file'
+    }, {
+      test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+      loader: 'url?limit=10000&mimetype=image/svg+xml'
+    }, {
       test: /\.css$/,
       loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
     }, {
@@ -44,8 +59,11 @@ module.exports = {
       loader: ExtractTextPlugin.extract('style-loader', 'css-loader!sass-loader')
     }]
   },
+  resolve: {
+    modulesDirectories: ['node_modules', 'bower_components']
+  },
   plugins: [
-    new ExtractTextPlugin('hi.css', {
+    new ExtractTextPlugin('[name].css', {
       allChunks: true
     })
   ]
