@@ -17,38 +17,40 @@ can.Component.extend({
         return;
       }
       GGRC.Controllers.MapperModal.launch(el, {
-        "object": 'Audit',
-        "type": 'Control',
-        "join-object-id": this.scope.audit.id,
-        "search-only": 'false',
-        "join-mapping": 'program_controls',
-        "generate-assessments": 'true',
-        "assessments-callback": this._generate_control_assessments.bind(this),
+        'object': 'Audit',
+        'type': 'Control',
+        'join-object-id': this.scope.audit.id,
+        'search-only': 'false',
+        'join-mapping': 'program_controls',
+        'generate-assessments': 'true',
+        'assessments-callback': this._generate_assessments.bind(this),
       });
     },
 
-    _generate_control_assessments: function(selected_controls) {
-      var assessments_list = this.scope.audit.get_binding("related_control_assessments").list,
-          controls_list = this.scope.audit.get_binding("program_controls").list,
-          assessments_dfd = this._refresh(assessments_list),
-          controls_dfd = this._refresh(controls_list),
-          ignore_controls, dfd, inner_dfd = new $.Deferred().resolve();
+    _generate_assessments: function(selected_controls) {
+      var assessments_list = this.scope.audit.get_binding('related_assessments').list;
+      var controls_list = this.scope.audit.get_binding('program_controls').list;
+      var assessments_dfd = this._refresh(assessments_list);
+      var controls_dfd = this._refresh(controls_list);
+      var ignore_controls;
+      var dfd;
+      var inner_dfd = new $.Deferred().resolve();
 
       dfd = $.when(assessments_dfd, controls_dfd).then(function (assessments, controls){
         // Preload related controls mapping on assessment objects
         var related_controls_dfd = $.when.apply($, can.map(assessments, function(assessment) {
-          return assessment.refresh_all("related_controls");
+          return assessment.refresh_all('related_controls');
         }));
         if (selected_controls) {
-          controls = _.map(selected_controls, function(control) {
-            return control.reify();
+          controls = _.map(selected_controls, function (control) {
+            return control.reify()
           });
         }
         return $.when(assessments, controls, related_controls_dfd);
       }).then(function (assessments, controls) {
         ignore_controls = _.map(assessments, function(ca) {
-          var control_id = ca.control && ca.control.id,
-              related_controls = ca.get_mapping('related_controls');
+          var control_id = ca.control && ca.control.id;
+          var related_controls = ca.get_mapping('related_controls');
           if (!control_id && related_controls.length) {
             control_id = _.exists(related_controls[0], 'instance.id');
           }
@@ -89,11 +91,11 @@ can.Component.extend({
             test_plan: control.test_plan
           };
       return dfd.then(function() {
-        return GGRC.Models.Search.counts_for_types(title, ['ControlAssessment']);
+        return GGRC.Models.Search.counts_for_types(title, ['Assessment']);
       }).then(function (result) {
-        index = result.getCountFor('ControlAssessment') + 1;
+        index = result.getCountFor('Assessment') + 1;
         data.title = title + ' ' + index;
-        return new CMS.Models.ControlAssessment(data).save();
+        return new CMS.Models.Assessment(data).save();
       }.bind(this));
     },
 
@@ -112,16 +114,16 @@ can.Component.extend({
       if (errors < 1) {
         if (count === 0) {
           msg = {
-            success: "Every Control already has a Control Assessment!"
+            success: "Every Control already has an Assessment!"
           };
         } else {
           msg = {
-            success: "<span class='user-string'>" + count + "</span> Control Assessments successfully created."
+            success: "<span class='user-string'>" + count + "</span> Assessments successfully created."
           };
         }
       } else {
         msg = {
-          error: "An error occured when creating Control Assessments."
+          error: "An error occured when creating Assessments."
         };
       }
 
@@ -134,7 +136,7 @@ can.Component.extend({
 
       $i.attr("class", "fa fa-spinner fa-pulse");
       $(document.body).trigger("ajax:flash",
-                               {warning: "Generating Control Assessments"});
+                               {warning: "Generating Assessments"});
 
       this.scope.icon = icon;
       this.scope.loading = true;

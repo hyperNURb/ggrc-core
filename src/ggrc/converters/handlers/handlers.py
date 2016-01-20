@@ -18,7 +18,7 @@ from ggrc.login import get_current_user
 from ggrc.models import Audit
 from ggrc.models import CategoryBase
 from ggrc.models import Contract
-from ggrc.models import ControlAssessment
+from ggrc.models import Assessment
 from ggrc.models import ObjectPerson
 from ggrc.models import Option
 from ggrc.models import Person
@@ -397,8 +397,12 @@ class MappingColumnHandler(ColumnHandler):
       elif self.unmap and mapping:
         db.session.delete(mapping)
     db.session.flush()
+    # it is safe to reuse this automapper since no other objects will be
+    # created while creating automappings and cache reuse yields significant
+    # performance boost
+    automapper = AutomapperGenerator(use_benchmark=False)
     for relation in relationships:
-      AutomapperGenerator(relation, False).generate_automappings()
+      automapper.generate_automappings(relation)
     self.dry_run = True
 
   def get_value(self):
@@ -427,7 +431,7 @@ class ConclusionColumnHandler(ColumnHandler):
 
   def parse_item(self):
     conclusion_map = {i.lower(): i for i in
-                      ControlAssessment.VALID_CONCLUSIONS}
+                      Assessment.VALID_CONCLUSIONS}
     return conclusion_map.get(self.raw_value.lower(), "")
 
 
@@ -817,8 +821,12 @@ class ResponseMappedObjectsColumnHandler(ColumnHandler):
       new_relationships.append(rel)
       db.session.add(rel)
     db.session.flush()
+    # it is safe to reuse this automapper since no other objects will be
+    # created while creating automappings and cache reuse yields significant
+    # performance boost
+    automapper = AutomapperGenerator(use_benchmark=False)
     for rel in new_relationships:
-      AutomapperGenerator(rel, False).generate_automappings()
+      automapper.generate_automappings(rel)
     self.dry_run = True
 
   def set_obj_attr(self):
