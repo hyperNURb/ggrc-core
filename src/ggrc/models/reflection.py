@@ -10,7 +10,7 @@ from sqlalchemy.sql.schema import UniqueConstraint
 
 from ggrc.utils import get_mapping_rules
 from ggrc.utils import title_from_camelcase
-
+import ggrc.models
 
 ATTRIBUTE_ORDER = (
     "slug",
@@ -231,8 +231,10 @@ class AttributeInfo(object):
     for mapping_class in object_mapping_rules:
       class_name = title_from_camelcase(mapping_class)
       mapping_name = "{}{}".format(cls.MAPPING_PREFIX, class_name)
+      mapping_model = getattr(ggrc.models.all_models, mapping_class)
+      title = mapping_model._inflector.human_plural.title()
       definitions[mapping_name.lower()] = {
-          "display_name": "map:{}".format(class_name),
+          "display_name": "Mapped {}".format(title),
           "attr_name": mapping_class.lower(),
           "mandatory": False,
           "unique": False,
@@ -242,7 +244,7 @@ class AttributeInfo(object):
 
       unmapping_name = "{}{}".format(cls.UNMAPPING_PREFIX, class_name)
       definitions[unmapping_name.lower()] = {
-          "display_name": "unmap:{}".format(class_name),
+          "display_name": "Unmap {}".format(title),
           "attr_name": mapping_class.lower(),
           "mandatory": False,
           "unique": False,

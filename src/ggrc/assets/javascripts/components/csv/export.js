@@ -23,7 +23,7 @@
         columns: function () {
           return _.filter(GGRC.model_attr_defs[this.attr("type")], function (el) {
             return (!el.import_only) &&
-                   (el.display_name.indexOf("unmap:") === -1);
+                   (el.display_name.indexOf("Unmap") === -1);
           });
         }
       }),
