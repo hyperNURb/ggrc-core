@@ -30,7 +30,7 @@ install:
 before_script:
   - "source bin/init_env"
   - make bower_components
-  - build_compass
+  - build_css
   - build_assets
 script:
   - bin/run_travis_tests unit

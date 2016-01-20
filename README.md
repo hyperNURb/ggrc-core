@@ -42,7 +42,7 @@ install it via pip)
     git submodule update --init
     vagrant up
     vagrant ssh
-    build_compass
+    build_css
     build_assets
     db_migrate
     ```
@@ -67,7 +67,7 @@ To enter a running container run
 
 And then continue just like with vagrant
 
-    build_compass
+    build_css
     build_assets
     db_migrate
 
@@ -243,14 +243,14 @@ This has been automated via a script available in $PATH in the virtual
 machine:
 
 ```sh
-build_compass
+build_css
 ```
 
 To have a process watch the Sass resources and compile them as they are changed
 you could use this command:
 
 ```sh
-watch_compass
+watch_css
 ```
 
 ### Compiling Assets
@@ -391,7 +391,7 @@ requirements of gGRC, it may also be necessary to rebuild the Sass and other
 web assets:
 
 ```sh
-build_compass
+build_css
 build_assets
 ```
 
