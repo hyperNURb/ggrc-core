@@ -38,8 +38,12 @@ ggrc_local_npm_modules:
   - name: eslint
   - name: eslint-config-google
   - name: node-sass
+  - name: webpack
   - name: sass-loader
   - name: css-loader
+  - name: style-loader
+  - name: bootstrap-sass
+  - name: font-awesome
   - name: extract-text-webpack-plugin
   - name: lodash
 
