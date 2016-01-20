@@ -25,6 +25,7 @@
 $fa-font-path: "/static/fonts";
 @import "./node_modules/font-awesome/scss/font-awesome.scss";
 
+@import "variables";
 @import "colors";
 @import "mixins";
 @import "placeholders";
