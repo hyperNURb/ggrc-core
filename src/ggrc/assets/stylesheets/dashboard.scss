@@ -5,29 +5,13 @@
  * Maintained By: vladan@reciprocitylabs.com
  */
 
-/* FIXME: Fix for https://github.com/rails/rails/issues/3686
- * - Bump this counter if asset dependencies aren't re-compiled on change
- * counter: 0
- */
 
-// NOTE! Don't use Sprockets 'require' statements inside SASS files
-
-// Required external stylesheets
-
-//@import "jquery-ui";
-
-
-// Whole file is commented. Leaving it for now. WIll be removed later.
-// @import "bootstrap-setup";
-
-@import "bootstrap";
-@import "bootstrap-responsive";
-
-@import "compass/css3";
-//@import "bootstrap-wysihtml5-0.0.2";
+$icon-font-path: "./src/ggrc/assets/vendor/bootstrap-sass/vendor/assets/stylesheets/bootstrap";
+@import "./src/ggrc/assets/vendor/bootstrap-sass/vendor/assets/stylesheets/bootstrap";
+@import "~compass-mixins/lib/compass";
 
 $fa-font-path: "/static/fonts";
-@import "font-awesome";
+@import "~font-awesome/scss/font-awesome";
 
 @import "colors";
 @import "mixins";
