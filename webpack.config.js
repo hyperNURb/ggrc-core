@@ -60,7 +60,9 @@ module.exports = {
     }]
   },
   resolve: {
-    modulesDirectories: ['node_modules', 'bower_components']
+    root: ['node_modules', 'bower_components'].map(function (dir) {
+      return path.join(__dirname, dir);
+    })
   },
   plugins: [
     new ExtractTextPlugin('[name].css', {
