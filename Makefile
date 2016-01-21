@@ -31,6 +31,7 @@ APPENGINE_REQUIREMENTS_TXT=$(PREFIX)/src/requirements.txt
 FLASH_PATH=$(PREFIX)/src/ggrc/static/flash
 STATIC_PATH=$(PREFIX)/src/ggrc/static
 BOWER_PATH=$(PREFIX)/bower_components
+NODE_MODULES_PATH=$(PREFIX)/node_modules
 
 $(APPENGINE_SDK_PATH) : $(APPENGINE_ZIP_PATH)
 	@echo $( dirname $(APPENGINE_ZIP_PATH) )
@@ -121,7 +122,7 @@ setup_dev : dev_virtualenv_packages linked_packages
 ## Deployment!
 
 src/ggrc/assets/stylesheets/dashboard.css : src/ggrc/assets/stylesheets/*.scss
-	bin/build_compass -e production --force
+	bin/build_css -p
 
 src/ggrc/assets/assets.manifest : src/ggrc/assets/stylesheets/dashboard.css src/ggrc/assets
 	source "bin/init_env"; \
@@ -152,7 +153,7 @@ bower_components : bower.json
 	mkdir -p $(FLASH_PATH)
 	bower install
 	cp $(BOWER_PATH)/zeroclipboard/dist/ZeroClipboard.swf $(FLASH_PATH)/ZeroClipboard.swf
-	cp -r $(BOWER_PATH)/fontawesome/fonts $(STATIC_PATH)
+	cp -r $(NODE_MODULES_PATH)/font-awesome/fonts $(STATIC_PATH)
 
 clean_bower_components :
 	rm -rf $(BOWER_PATH) $(FLASH_PATH) $(STATIC_PATH)/fonts
