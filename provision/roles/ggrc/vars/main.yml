@@ -49,11 +49,6 @@ ggrc_local_npm_modules:
   - name: extract-text-webpack-plugin
   - name: lodash
 
-ggrc_gems:
-  - name: 'sass'
-    version: '3.2.13'
-  - name: 'compass'
-    version: '0.12.2'
 
 ggrc_databases:
   - name: ggrcdev

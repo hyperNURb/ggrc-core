@@ -261,7 +261,7 @@ For other asset bundling required, there is the following command:
 build_assets
 ```
 
-As for Compass, there is an asset builder that can watch for changes and update
+As for CSS, there is an asset builder that can watch for changes and update
 files as they change:
 
 ```sh
