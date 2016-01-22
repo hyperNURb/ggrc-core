@@ -23,7 +23,7 @@ install:
   - "pip install --user google-api-python-client"
   - "pip install --user mysql-python"
   - "pip install --user webob"
-  - npm install karma karma-jasmine jasmine-core phantomjs karma-chrome-launcher bower
+  - npm install karma karma-jasmine jasmine-core phantomjs karma-chrome-launcher bower webpack node-sass sass-loader css-loader file-loader url-loader style-loader font-awesome compass-mixins lodash
   - bower install
 before_script:
   - "source bin/init_env"
