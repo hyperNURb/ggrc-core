@@ -10,7 +10,8 @@ var _ = require('lodash');
 var path = require('path');
 var GGRC = {
   get_dashboard_modules: function () {
-    return _.compact(_.map(process.env.GGRC_SETTINGS_MODULE.split(' '), function (module) {
+    var modules = process.env.GGRC_SETTINGS_MODULE.split(' ');
+    return _.compact(_.map(modules, function (module) {
       var name;
       if (/^ggrc/.test(module)) {
         name = module.split('.')[0];
@@ -56,7 +57,8 @@ module.exports = {
       loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
     }, {
       test: /\.s[ca]ss$/,
-      loader: ExtractTextPlugin.extract('style-loader', 'css-loader!sass-loader')
+      loader: ExtractTextPlugin.extract(
+        'style-loader', 'css-loader!sass-loader')
     }]
   },
   resolve: {
