@@ -5,6 +5,11 @@
 
 python:
   - "2.7"
+node_js:
+  - "5"
+  - "4"
+  - "0.12"
+
 sudo: false  # to enable container-based infrastructure
 services: mysql
 virtualenv:
