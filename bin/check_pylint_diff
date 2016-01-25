@@ -8,8 +8,11 @@
 set -o nounset
 set -o errexit
 
+TMP_REPO="/tmp/ggrc-core"
 SCRIPTPATH=$( cd "$(dirname "$0")" ; pwd -P )
-cd "${SCRIPTPATH}/.."
+rm -rf $TMP_REPO
+cp -a /vagrant $TMP_REPO
+cd $TMP_REPO
 
 if [[ "${1:-}" != "" ]]; then
   TEST_COMMIT=$1
@@ -28,6 +31,7 @@ git checkout --quiet $TEST_COMMIT
 PYLINT_RESULT=$(pylint src/* 2> /dev/null | tail -n 2) 
 git checkout --quiet $CURRENT_COMMIT
 
+echo "$PYLINT_RESULT"
 echo "$PYLINT_RESULT" | grep "+" && rc=$? || rc=$?
 
 exit $rc
