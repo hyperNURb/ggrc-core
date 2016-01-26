@@ -3,12 +3,9 @@
 # Created By: swizec@reciprocitylabs.com
 # Maintained By: swizec@reciprocitylabs.comlanguage: python
 
+dist: trusty
 python:
   - "2.7"
-node_js:
-  - "5"
-  - "4"
-  - "0.12"
 
 sudo: false  # to enable container-based infrastructure
 services: mysql
@@ -20,7 +17,7 @@ before_install:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 install:
-  - "wget https://commondatastorage.googleapis.com/appengine-sdks/deprecated/193/google_appengine_1.9.3.zip  -nv"
+  - "wget https://commondatastorage.googleapis.com/appengine-sdks/deprecated/193/google_appengine_1.9.3.zip -nv"
   - "unzip -qd src google_appengine_1.9.3.zip"
   - "mv src/google_appengine/google src/"
   - "pip install --user -r src/requirements.txt"
@@ -28,6 +25,7 @@ install:
   - "pip install --user google-api-python-client"
   - "pip install --user mysql-python"
   - "pip install --user webob"
+  - "wget https://nodejs.org/dist/v5.5.0/node-v5.5.0-linux-x64.tar.xz && tar -xf node-v5.5.0-linux-x64.tar.xz && export PATH="`pwd`/node-v5.5.0-linux-x64/bin":$PATH"
   - npm install karma karma-jasmine jasmine-core phantomjs karma-chrome-launcher bower webpack node-sass sass-loader css-loader file-loader url-loader style-loader font-awesome compass-mixins lodash extract-text-webpack-plugin
   - bower install
 before_script:
