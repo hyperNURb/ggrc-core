@@ -88,7 +88,6 @@ dashboard-js-files:
   - controllers/unmap_modal_controller.js
   - controllers/mapping_count_controller.js
   - controllers/info_pin_controller.js
-  - controllers/assessment_generator.js
   - controllers/automapper_controller.js
   - models/control.js
   - controllers/dashboard_controller.js
@@ -108,6 +107,8 @@ dashboard-js-files:
   - apps/quick_search.js
   - apps/business_objects.js
   - apps/custom_attributes.js
+  # Components
+  - components/assessment_generator.js
   - components/link_to_clipboard.js
   - components/relevant_filters.js
   - components/csv/export.js
