@@ -36,7 +36,10 @@
         data-modal-class="modal-wide"
         data-object-singular="AssessmentTemplate"
         data-object-plural="assessment_templates"
-        data-object-params="{{data 'instance'}}">
+        data-object-params='{
+          "audit_id": {{instance.id}},
+          "audit_title": "{{json_escape instance.title}}"
+        }'>
         Define Assessment template
       </a>
     </li>
