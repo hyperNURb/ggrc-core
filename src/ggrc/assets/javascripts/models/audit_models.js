@@ -1116,6 +1116,7 @@
     form_preload: function (isNewObject) {
       if (isNewObject) {
         this.attr('default_people', {});
+        this.attr('_template_attributes', new can.List());
       }
 
       this.attr('_objectTypes', this._choosableObjectTypes());
