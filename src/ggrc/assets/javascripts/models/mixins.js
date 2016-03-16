@@ -185,13 +185,11 @@
                 binding).refresh_instances();
             }));
         });
-
         $.when.apply($, relatedObjectsDeferreds).done(function () {
           _.each(_.toArray(arguments), function (relatedObjects) {
             _.each(relatedObjects, function (relObj) {
               var type = relObj.binding.instance.type;
               var weight = relevantTypes[type].weight;
-
               if (relObj.instance.id !== that.id) {
                 if (connectionsCount[relObj.instance.id] === undefined) {
                   connectionsCount[relObj.instance.id] = {
@@ -204,7 +202,6 @@
               }
             });
           });
-
           relatable.resolve(
             _.map(_.sortBy(connectionsCount, 'count').reverse(),
               function (item) {
