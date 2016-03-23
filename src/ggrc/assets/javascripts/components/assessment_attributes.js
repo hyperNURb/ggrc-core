@@ -34,16 +34,8 @@
        * Removes `field` from `fileds`
        */
       removeField: function (scope, el, ev) {
-        var fileds = scope.attr('fields');
-        var field = scope.attr('field');
-        var index = _.findIndex(fileds, function (item) {
-          return item.type === field.type && item.title === field.title;
-        });
-
         ev.preventDefault();
-        if (index !== -1) {
-          fileds.splice(index, 1);
-        }
+        scope.attr('_pending_delete', true);
       },
       /*
        * Split field values
@@ -51,7 +43,10 @@
        * @return {Array} attrs - Returns split values as an array
        */
       attrs: function () {
-        return _.splitTrim(this.attr('field.values'), {
+        if (_.contains(['Person', 'Text'], this.field.attr('type'))) {
+          return [this.attr('field.multi_choice_options')];
+        }
+        return _.splitTrim(this.attr('field.multi_choice_options'), {
           compact: true
         });
       }
@@ -75,7 +70,11 @@
       }, {
         type: 'Text',
         text: 'Type description'
+      }, {
+        type: 'Person',
+        text: 'Type description'
       }],
+      valueAttrs: ['Dropdown', 'Checkbox', 'Radio'],
       /*
        * Create new field
        *
@@ -96,17 +95,18 @@
         }).join(',');
 
         ev.preventDefault();
-        if (!type || !values || !title) {
+        if (!type || !title ||
+            (_.contains(scope.valueAttrs, type) && !values)) {
           return;
         }
 
         fields.push({
           title: title,
-          type: type,
-          values: values,
+          attribute_type: type,
+          multi_choice_options: values,
           opts: new can.Map()
         });
-        _.each(['title', 'values'], function (type) {
+        _.each(['title', 'multi_choice_options'], function (type) {
           selected.attr(type, '');
         });
       }
