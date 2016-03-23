@@ -1097,7 +1097,6 @@
      */
     init: function () {
       this._super.apply(this, arguments);
-      this.validateNonBlank('title');
     }
   }, {
     // the object types that are not relevant to the AssessmentTemplate,
