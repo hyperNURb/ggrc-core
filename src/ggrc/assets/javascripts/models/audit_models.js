@@ -1237,6 +1237,7 @@
       });
 
       return objectTypes;
-    }
+    },
+    ignore_ca_errors: true
   });
 })(this.can);

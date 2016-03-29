@@ -18,6 +18,7 @@ class CustomAttributeDefinition(mixins.Base, mixins.Titled, db.Model):
   definition_id = db.Column(db.Integer)
   attribute_type = db.Column(db.String, nullable=False)
   multi_choice_options = db.Column(db.String)
+  multi_choice_mandatory = db.Column(db.String)
   mandatory = db.Column(db.Boolean)
   helptext = db.Column(db.String)
   placeholder = db.Column(db.String)
@@ -26,7 +27,7 @@ class CustomAttributeDefinition(mixins.Base, mixins.Titled, db.Model):
                                      backref='custom_attribute')
 
   __table_args__ = (
-      UniqueConstraint('title', 'definition_type', 'definition_id',
+      UniqueConstraint('definition_type', 'definition_id', 'title',
                        name='uq_custom_attribute'),
       db.Index('ix_custom_attributes_title', 'title'))
 
@@ -35,6 +36,7 @@ class CustomAttributeDefinition(mixins.Base, mixins.Titled, db.Model):
       'definition_id',
       'attribute_type',
       'multi_choice_options',
+      'multi_choice_mandatory',
       'mandatory',
       'helptext',
       'placeholder',
