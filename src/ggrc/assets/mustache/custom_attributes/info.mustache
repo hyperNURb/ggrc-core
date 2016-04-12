@@ -21,28 +21,36 @@
             <div data-custom-attribute="{{id}}" data-type="{{attribute_type}}">
               {{#with_value_for_id id}}
                 {{#switch attribute_type}}
-                {{#case 'Checkbox'}}
-                  <h6>
-                    <input type="checkbox" disabled="disabled" {{#if_equals value "1"}}checked="checked"{{/if_equals}}>
-                    {{title}}
-                  </h6>
-                {{/case}}
-                {{#case 'Rich Text'}}
-                  <h6>{{title}}</h6>
-                  {{{value}}}
-                {{/case}}
-                {{#case 'Map:Person'}}
-                  <h6>{{title}}</h6>
-                  {{#with_object_for_id id}}
-                    {{#using person=object}}
-                      {{>'/static/mustache/people/popover.mustache'}}
-                    {{/using}}
-                  {{/with_object_for_id}}
-                {{/case}}
-                {{#default}}
-                  <h6>{{title}}</h6>
-                  {{value}}
-                {{/default}}
+                  {{#case 'Checkbox'}}
+                    <h6>
+                      <input type="checkbox" disabled="disabled" {{#if_equals value "1"}}checked="checked"{{/if_equals}}>
+                      {{title}}
+                    </h6>
+                  {{/case}}
+                  {{#case 'Rich Text'}}
+                    {{#if value}}
+                      <h6>{{title}}</h6>
+                      {{{value}}}
+                    {{/if}}
+                  {{/case}}
+                  {{#case 'Map:Person'}}
+                    {{#prune_context}}
+                    {{#if id}}
+                      <h6>{{title}}</h6>
+                      {{#with_object_for_id id}}
+                        {{#using person=object}}
+                          {{>'/static/mustache/people/popover.mustache'}}
+                        {{/using}}
+                      {{/with_object_for_id}}
+                    {{/id}}
+                    {{/prune_context}}
+                  {{/case}}
+                  {{#default}}
+                    {{#if value}}
+                      <h6>{{title}}</h6>
+                      {{value}}
+                    {{/if}}
+                  {{/default}}
                 {{/switch}}
               {{/with_value_for_id}}
             </div>
