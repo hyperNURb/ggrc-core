@@ -110,7 +110,8 @@ dashboard-js-files:
   - models/custom_attributes.js
   - apps/quick_search.js
   - apps/business_objects.js
-  - apps/custom_attributes.js
+  # Components
+  - components/custom_attributes/custom_attributes.js
   - components/unified_mapper/mapper.js
   - components/unified_mapper/mapper_results.js
   - components/unified_mapper/mapper_checkbox.js
@@ -135,8 +136,6 @@ dashboard-js-files:
   - components/unified_mapper/mapper_checkbox.js
   - components/assessment_templates/assessment_templates.js
   - components/modal_wrappers/assessment_template_form.js
-  #- d3.v2.js
-  #- related_graph.js
 
 app-init-files:
   - apps/dashboard.js
