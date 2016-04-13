@@ -6,7 +6,7 @@
 */
 
 (function (can, $) {
-  can.Component.extend({
+  GGRC.Components('customAttributes', {
     tag: 'custom-attributes',
     scope: {
       instance: null,
