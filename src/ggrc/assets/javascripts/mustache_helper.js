@@ -2626,18 +2626,24 @@ Mustache.registerHelper("truncate", function (len, str) {
   return str;
 });
 
-Mustache.registerHelper("switch", function (value, options) {
+Mustache.registerHelper('switch', function (value, options) {
   var frame = new can.Observe({});
   value = resolve_computed(value);
-  frame.attr(value || "default", true);
-  frame.attr("default", true);
+  frame.attr(value || 'default', true);
+  frame.attr('default', true);
+  frame.attr('scope', options.context);
+
   return options.fn(options.contexts.add(frame), {
-    helpers : {
-      case : function (val, options) {
+    helpers: {
+      'case': function (val, options) {
         val = resolve_computed(val);
         if (options.context[val]) {
-          options.context.attr ? options.context.attr("default", false) : (options.context.default = false);
-          return options.fn(options.contexts);
+          if (options.context.attr) {
+            options.context.attr('default', false);
+          } else {
+            options.context.default = false;
+          }
+          return options.fn(options.context);
         }
       }
     }
