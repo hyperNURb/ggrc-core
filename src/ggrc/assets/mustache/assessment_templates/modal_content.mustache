@@ -143,7 +143,9 @@
               {{#each instance.assessorsList}}
                 <person
                   person-id="{{@key}}"
-                  can-person-remove="instance.assessorRemoved"></person>
+                  is-unmappable="true"
+                  can-person-remove="instance.assessorRemoved"
+                ></person>
               {{/each}}
             {{/if}}
           </div>
@@ -178,6 +180,7 @@
               {{#each instance.verifiersList}}
                 <person
                   person-id="{{@key}}"
+                  is-unmappable="true"
                   can-person-remove="instance.verifierRemoved"></person>
               {{/each}}
             {{/if}}
