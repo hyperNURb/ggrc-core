@@ -36,10 +36,17 @@
      * @param {Object} options - the component instantiation options
      */
     init: function (element, options) {
-      var $el = $(element);
-      var personId = Number($el.attr('person-id'));
-      var personObj = CMS.Models.Person.cache[personId];
       var scope = this.scope;
+      var personId;
+      var personObj;
+
+      if (scope.attr('personObj')) {
+        personObj = scope.attr('personObj');
+        personId = personObj.id;
+      } else {
+        personId = Number(scope.attr('person-id'));
+        personObj = CMS.Models.Person.cache[personId];
+      }
 
       // For some reason the cache sometimes contains partially loaded objects,
       // thus we also need to check if "email" (a required field) is present.
@@ -52,13 +59,14 @@
       // but if not in cache, we need to fetch the person object...
       CMS.Models.Person
         .findOne({id: personId})
-        .then(function (person) {
+        .done(function (person) {
           scope.attr('personObj', person);
-        }, function () {
-          $el.trigger(
-            'ajax:flash',
-            {error: 'Failed to fetch data for person ' + personId + '.'});
-        });
+        })
+        .fail(function () {
+          this.element.trigger('ajax:flash', {
+            error: 'Failed to fetch data for person ' + personId + '.'
+          });
+        }.bind(this));
     },
 
     events: {
