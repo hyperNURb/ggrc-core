@@ -23,7 +23,8 @@
 
     scope: {
       personObj: null,
-      isUnmappable: '@'
+      isUnmappable: '@',
+      personId: '@'
     },
 
     _EV_REMOVE_CLICK: 'person-remove',
@@ -38,6 +39,7 @@
      */
     init: function (element, options) {
       var scope = this.scope;
+      var $el = $(element);
       var personId;
       var personObj;
 
@@ -45,7 +47,10 @@
         personObj = scope.attr('personObj');
         personId = personObj.id;
       } else {
-        personId = Number(scope.attr('person-id'));
+        // We are getting element.attr because Jasmine tests can't
+        // read from HTML element
+        personId = Number(scope.attr('personId') ||
+          $el.attr('person-id'));
         personObj = CMS.Models.Person.cache[personId];
       }
 
@@ -64,7 +69,7 @@
           scope.attr('personObj', person);
         })
         .fail(function () {
-          this.element.trigger('ajax:flash', {
+          $el.trigger('ajax:flash', {
             error: 'Failed to fetch data for person ' + personId + '.'
           });
         }.bind(this));
