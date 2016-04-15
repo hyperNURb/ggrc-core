@@ -13,51 +13,29 @@
     </div>
   </div>
   {{else}}
-    {{#if instance.custom_attribute_definitions.length}}
-      {{#iterate_by_two instance.custom_attribute_definitions}}
-        <div class="row-fluid wrap-row">
-        {{#list}}
-          <div class="span6">
-            <div data-custom-attribute="{{id}}" data-type="{{attribute_type}}">
-              {{#with_value_for_id id}}
-                {{#switch attribute_type}}
-                  {{#case 'Checkbox'}}
-                    <h6>
-                      <input type="checkbox" disabled="disabled" {{#if_equals value "1"}}checked="checked"{{/if_equals}}>
-                      {{title}}
-                    </h6>
-                  {{/case}}
-                  {{#case 'Rich Text'}}
-                    {{#if value}}
-                      <h6>{{title}}</h6>
-                      {{{value}}}
-                    {{/if}}
-                  {{/case}}
-                  {{#case 'Map:Person'}}
-                    {{#prune_context}}
-                    {{#if id}}
-                      <h6>{{title}}</h6>
-                      {{#with_object_for_id id}}
-                        {{#using person=object}}
-                          {{>'/static/mustache/people/popover.mustache'}}
-                        {{/using}}
-                      {{/with_object_for_id}}
-                    {{/id}}
-                    {{/prune_context}}
-                  {{/case}}
-                  {{#default}}
-                    {{#if value}}
-                      <h6>{{title}}</h6>
-                      {{value}}
-                    {{/if}}
-                  {{/default}}
-                {{/switch}}
-              {{/with_value_for_id}}
-            </div>
+    {{#if caList.length}}
+      <div class="row-fluid custom-attribute__wrapper">
+      {{#caList}}
+        <div class="span6 custom-attribute__item">
+          <div data-custom-attribute="{{id}}" data-type="{{attribute_type}}">
+          {{#switch attribute_type}}
+            {{#case 'Checkbox'}}
+              {{> "/static/mustache/components/custom_attributes/checkbox.mustache"}}
+            {{/case}}
+            {{#case 'Rich Text'}}
+              {{> "/static/mustache/components/custom_attributes/text.mustache"}}
+            {{/case}}
+            {{#case 'Map:Person'}}
+              {{> "/static/mustache/components/custom_attributes/person.mustache"}}
+            {{/case}}
+            {{#default}}
+              {{> "/static/mustache/components/custom_attributes/text.mustache"}}
+            {{/default}}
+          {{/switch}}
           </div>
-        {{/list}}
         </div>
-      {{/instance.custom_attribute_definitions}}
+      {{/caList}}
+      </div>
     {{/if}}
-  {{/loading}}
+  {{/if}}
 </custom-attributes>

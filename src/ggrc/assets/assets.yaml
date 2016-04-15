@@ -243,6 +243,10 @@ dashboard-js-template-files:
   - components/dropdown/dropdown.mustache
   - components/object_history/object_history.mustache
   - components/person/person.mustache
+  - components/custom_attributes/text.mustache
+  - components/custom_attributes/rich_text.mustache
+  - components/custom_attributes/person.mustache
+  - components/custom_attributes/checkbox.mustache
   - custom_attributes/modal_content.mustache
   - custom_attributes/info.mustache
   - custom_attribute_definitions/modal_content.mustache
