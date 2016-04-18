@@ -8,6 +8,7 @@
 (function (can, $) {
   GGRC.Components('customAttributes', {
     tag: 'custom-attributes',
+    content: '<content/>',
     scope: {
       instance: null,
       // Make sure custom_attribute_definitions & custom_attribute_values
@@ -65,7 +66,6 @@
         }.bind(this));
       }
     },
-    content: '<content/>',
     events: {
       '{scope.instance} updated': function () {
         this.scope.refreshAttributes();
@@ -77,6 +77,37 @@
       }
       if (this.scope.load) {
         this.scope.refreshAttributes();
+      }
+    },
+    helpers: {
+      with_value_for_id: function (id, options) {
+        var ret;
+        id = Mustache.resolve(id);
+        can.each(this.instance.custom_attribute_values, function (value) {
+          value = value.reify();
+          if (value.custom_attribute_id === id) {
+            ret = value.attribute_value;
+          }
+        });
+        return options.fn(options.contexts.add({
+          value: ret
+        }));
+      },
+      with_object_for_id: function (id, options) {
+        var ret;
+        id = Mustache.resolve(id);
+        can.each(this.instance.custom_attribute_values, function (value) {
+          value = value.reify();
+          if (value.custom_attribute_id === id) {
+            ret = value.attribute_object;
+            if (ret) {
+              ret = ret.reify();
+            }
+          }
+        });
+        return options.fn(options.contexts.add({
+          object: ret
+        }));
       }
     }
   });
