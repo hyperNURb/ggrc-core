@@ -18,7 +18,8 @@
       instance: null,
       type: '@',
       caId: null,
-      property: null,
+      property: '@',
+      value: null,
       values: null,
       isSaving: false,
       context: {
@@ -38,7 +39,7 @@
       },
       onSave: function (ctx, el, ev) {
         var caid = this.attr('caId');
-        var prop = this.attr('property');
+        var property = this.attr('property');
         var instance = this.attr('instance');
         var oldValue = this.attr('property');
         var value = this.attr('context.value');
@@ -58,7 +59,7 @@
             }
             instance.attr('custom_attributes.' + caid, value);
           } else {
-            instance.attr(prop, value);
+            instance.attr(property, value);
           }
 
           instance.save()
@@ -80,10 +81,15 @@
     },
     init: function () {
       var scope = this.scope;
-      var value = scope.attr('property');
+      var value = scope.attr('value');
+      var property = scope.attr('property');
+      var instance = scope.attr('instance');
 
       if (scope.attr('caId') && scope.attr('type') === 'checkbox') {
         value = value === '1';
+      }
+      if (property) {
+        value = instance.attr(property);
       }
       scope.attr('context.value', value);
       if (_.isString(scope.attr('values'))) {
