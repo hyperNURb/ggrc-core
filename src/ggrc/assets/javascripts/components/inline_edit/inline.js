@@ -93,12 +93,15 @@
       if (scope.attr('caId')) {
         if (type === 'checkbox') {
           value = value === '1';
-        }
-        if (type === 'person') {
+        } else if (type === 'person') {
           if (value && value instanceof can.Map) {
             value = value.serialize();
           }
           value = _.isEmpty(value) ? undefined : value;
+        }
+
+        if (!scope.attr('textIfEmpty')) {
+          scope.attr('textIfEmpty', 'None');  // default for custom attributes
         }
       }
       if (property) {
