@@ -1165,59 +1165,70 @@ can.Model("can.Model.Cacheable", {
     var isNew = this.isNew();
     var xhr;
     var dfd = this._dfd;
+    var save = $.Deferred();
     var preSaveNotifier = new PersistentNotifier({
       name: this.constructor.model_singular + ' (pre-save)'
     });
 
     if (this.before_save) {
-      this.before_save(preSaveNotifier);
+      this.before_save(preSaveNotifier, save);
+    } else {
+      save.resolve();
     }
 
-    if (isNew) {
-      this.attr('provisional_id',
-        'provisional_' + Math.floor(Math.random() * 10000000));
-      can.getObject('provisional_cache',
-        can.Model.Cacheable, true)[this.provisional_id] = this;
-      if (this.before_create) {
-        this.before_create(preSaveNotifier);
-      }
-    } else if (this.before_update) {
-      this.before_update(preSaveNotifier);
-    }
-
-    preSaveNotifier.on_empty(function () {
-      xhr = _super.apply(this, arguments);
-      xhr.then(function (result) {
-        if (isNew && this.after_create) {
-          this.after_create();
-        }
-        if (this.after_update) {
-          this.after_update();
-        }
-        if (this.after_save) {
-          this.after_save();
-        }
-        return result;
-      }.bind(this), function (xhr, status, message) {
-        if (this.save_error) {
-          this.save_error(xhr.responseText);
-        }
-        return new $.Deferred().reject(xhr, status, message);
-      }.bind(this))
-      .fail(function (response) {
-        this.notifier.on_empty(function () {
-          dfd.reject(this, response.responseText);
-        }.bind(this));
+    save
+      .fail(function () {
+        this.restore();
+        dfd.reject(this);
       }.bind(this))
       .done(function () {
-        this.notifier.on_empty(function () {
-          dfd.resolve(this);
+        if (isNew) {
+          this.attr('provisional_id',
+            'provisional_' + Math.floor(Math.random() * 10000000));
+          can.getObject('provisional_cache',
+            can.Model.Cacheable, true)[this.provisional_id] = this;
+          if (this.before_create) {
+            this.before_create(preSaveNotifier);
+          }
+        } else if (this.before_update) {
+          this.before_update(preSaveNotifier);
+        }
+
+        preSaveNotifier.on_empty(function () {
+          xhr = _super.apply(this, arguments);
+          xhr.then(function (result) {
+            if (isNew && this.after_create) {
+              this.after_create();
+            }
+            if (this.after_update) {
+              this.after_update();
+            }
+            if (this.after_save) {
+              this.after_save();
+            }
+            return result;
+          }.bind(this), function (xhr, status, message) {
+            if (this.save_error) {
+              this.save_error(xhr.responseText);
+            }
+            return new $.Deferred().reject(xhr, status, message);
+          }.bind(this))
+          .fail(function (response) {
+            this.notifier.on_empty(function () {
+              dfd.reject(this, response.responseText);
+            }.bind(this));
+          }.bind(this))
+          .done(function () {
+            this.notifier.on_empty(function () {
+              dfd.resolve(this);
+            }.bind(this));
+          }.bind(this));
+
+          GGRC.delay_leaving_page_until(xhr);
+          GGRC.delay_leaving_page_until(dfd);
         }.bind(this));
       }.bind(this));
 
-      GGRC.delay_leaving_page_until(xhr);
-      GGRC.delay_leaving_page_until(dfd);
-    });
     return dfd;
   },
   save: function () {

@@ -872,12 +872,6 @@
         show_view: GGRC.mustache_path + '/base_templates/urls.mustache'
       }
     },
-    confirmEditModal: {
-      title: 'Confirm moving Request to "In Progress"',
-      description: 'You are about to move request from ' +
-      '"{{status}}" to "In Progress" - are you sure about that?',
-      button: 'Confirm'
-    },
     assignable_list: [{
       type: 'creator',
       mapping: 'related_creators',
@@ -945,6 +939,27 @@
       if (this._super) {
         this._super.apply(this, arguments);
       }
+    },
+    before_save: function (notifier, dfd) {
+      var title;
+      var description;
+      var status = this._backupStore.status;
+
+      if (['Completed', 'Verified'].indexOf(status) === -1) {
+        return dfd.resolve();
+      }
+
+      title = 'Confirm moving Request to "In Progress"';
+      description = 'You are about to move request from ' +
+          '"' + status + '" to "In Progress"' +
+          ' - are you sure about that?';
+
+      GGRC.Controllers.Modals.confirm({
+        modal_description: description,
+        modal_confirm: 'Confirm',
+        modal_title: title,
+        button_view: GGRC.mustache_path + '/modals/confirm_buttons.mustache'
+      }, dfd.resolve, dfd.reject);
     },
     save: function () {
       if (!this.attr('program')) {

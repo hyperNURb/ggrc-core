@@ -73,17 +73,10 @@ can.Control('CMS.Controllers.InfoPin', {
     var options = this.findOptions(el);
     var view = this.findView(instance);
     var panelHeight = $(window).height() / 3;
-    var confirmEdit = instance.class.confirmEditModal ?
-      instance.class.confirmEditModal : {};
-
-    if (!_.isEmpty(confirmEdit)) {
-      confirmEdit.confirm = this.confirmEdit;
-    }
 
     this.element.html(can.view(view, {
       instance: instance,
       model: instance.class,
-      confirmEdit: confirmEdit,
       is_info_pin: true,
       options: options,
       result: options.result,
@@ -130,17 +123,6 @@ can.Control('CMS.Controllers.InfoPin', {
         el[0].scrollIntoView(false);
       }
     }
-  },
-  confirmEdit: function (instance, modalDetails) {
-    var confirmDfd = $.Deferred();
-    var renderer = can.view.mustache(modalDetails.description);
-    GGRC.Controllers.Modals.confirm({
-      modal_description: renderer(instance).textContent,
-      modal_confirm: modalDetails.button,
-      modal_title: modalDetails.title,
-      button_view: GGRC.mustache_path + '/quick_form/confirm_buttons.mustache'
-    }, confirmDfd.resolve);
-    return confirmDfd;
   },
   '.pin-action a click': function (el) {
     var $win = $(window);
