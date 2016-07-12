@@ -122,7 +122,7 @@
    *     new_object_title:
    */
 
-  can.Control("GGRC.Controllers.UserRolesModalSelector", {
+  can.Control.extend("GGRC.Controllers.UserRolesModalSelector", {
     _templates: [
       "base_modal_view",
       "option_column_view",

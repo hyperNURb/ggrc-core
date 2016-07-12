@@ -10,7 +10,7 @@
  *  trigger() -> Deferred
  */
 
-can.Construct("ModelRefreshQueue", {
+can.Construct.extend("ModelRefreshQueue", {
 }, {
     init: function(model) {
       this.model = model;
@@ -66,7 +66,7 @@ can.Construct("ModelRefreshQueue", {
     }
 });
 
-can.Construct("RefreshQueueManager", {
+can.Construct.extend("RefreshQueueManager", {
     model_bases: {
       // This won't work until Relatable/Documentable/etc mixins can handle
       // queries with multiple `type` values.
@@ -145,7 +145,7 @@ can.Construct("RefreshQueueManager", {
     }
 });
 
-can.Construct("RefreshQueue", {
+can.Construct.extend("RefreshQueue", {
     refresh_queue_manager: new RefreshQueueManager(),
     refresh_all: function(instance, props, force) {
       var dfd = new $.Deferred();

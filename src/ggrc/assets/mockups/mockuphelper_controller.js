@@ -10,7 +10,7 @@
   // Activate router
   $(document).ready(can.route.ready);
 
-  can.Control("CMS.Controllers.MockupHelper", {
+  can.Control.extend("CMS.Controllers.MockupHelper", {
     defaults: {
       title_view: GGRC.mustache_path + "/title.mustache",
       object_views: {},
@@ -53,7 +53,7 @@
     }
   });
 
-  can.Control("CMS.Controllers.MockupNav", {
+  can.Control.extend("CMS.Controllers.MockupNav", {
     defaults: {
       view: "/static/mustache/mockup_base_templates/nav_item.mustache"
     }
@@ -68,7 +68,7 @@
     }
   });
 
-  can.Control("CMS.Controllers.MockupView", {
+  can.Control.extend("CMS.Controllers.MockupView", {
     defaults: {
       title_view: GGRC.mustache_path + "/title.mustache",
       slide_speed: 240
@@ -98,7 +98,7 @@
       }
   });
 
-  can.Control("CMS.Controllers.MockupModalView", {
+  can.Control.extend("CMS.Controllers.MockupModalView", {
     defaults: {
       instance: null
     }

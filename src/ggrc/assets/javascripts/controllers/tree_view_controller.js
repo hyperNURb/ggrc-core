@@ -76,7 +76,7 @@ can.Observe('can.Observe.TreeOptions', {
   }
 }, {});
 
-can.Control('CMS.Controllers.TreeLoader', {
+can.Control.extend('CMS.Controllers.TreeLoader', {
   defaults: {}
 }, {
   init_spinner: function () {
@@ -1455,7 +1455,7 @@ CMS.Controllers.TreeLoader('CMS.Controllers.TreeView', {
   }
 });
 
-can.Control('CMS.Controllers.TreeViewNode', {
+can.Control.extend('CMS.Controllers.TreeViewNode', {
   defaults: {
     model: null,
     parent: null,

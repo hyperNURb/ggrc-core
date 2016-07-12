@@ -4,7 +4,7 @@
  */
 
 (function (can, $) {
-  can.Control('GGRC.Controllers.PbcWorkflows', {}, {
+  can.Control.extend('GGRC.Controllers.PbcWorkflows', {}, {
     '{CMS.Models.Issue} created': function (model, ev, instance) {
       var auditDfd;
       var controlDfd;

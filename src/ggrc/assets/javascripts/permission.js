@@ -40,7 +40,7 @@
   };
   var permissions_compute = can.compute(GGRC.permissions);
 
-  can.Construct('Permission', {
+  can.Construct.extend('Permission', {
 
     _admin_permission_for_context: function (context_id) {
       return new Permission(

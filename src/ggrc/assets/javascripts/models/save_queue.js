@@ -18,7 +18,7 @@
    *
    *  enqueue(obj: CMS.Models.Cacheable, save_args) -> null
    */
-  can.Construct('GGRC.SaveQueue', {
+  can.Construct.extend('GGRC.SaveQueue', {
 
     DELAY: 100, // Number of ms to wait before the first batch is fired
     BATCH: GGRC.config.MAX_INSTANCES || 3, // Maximum number of POST/PUT requests at any given time

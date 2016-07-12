@@ -11,7 +11,7 @@
 (function(can){
 
   // Base model to handle reading / writing to local storage
-  can.Model("can.Model.LocalStorage", {
+  can.Model.extend("can.Model.LocalStorage", {
     makeFindOne : function( findOne ) {
 
       if(typeof findOne === "function" && this !== can.Model.LocalStorage) {

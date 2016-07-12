@@ -8,7 +8,7 @@
     return '[data-toggle="' + val + '"]';
   });
 
-  can.Control('GGRC.Controllers.MapperModal', {
+  can.Control.extend('GGRC.Controllers.MapperModal', {
     defaults: {
       component: GGRC.mustache_path + '/modals/mapper/component.mustache'
     },
@@ -18,7 +18,7 @@
       var $target = $('<div id="' + modalId + '" class="modal modal-selector hide"></div>');
 
       $target.modal_form({}, $trigger);
-      this.newInstance($target[0], $.extend({
+      this.newInstance($target[0], $.extend(this.options, {
         $trigger: $trigger
       }, options));
       return $target;

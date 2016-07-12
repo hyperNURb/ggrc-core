@@ -4,6 +4,7 @@
 */
 
 ;(function (GGRC, can) {
+  var Cache = {};
 
   /*  GGRC.ListLoaders
    *
@@ -38,7 +39,7 @@
    *  For CrossListLoader, the mappings are (`result`, `binding`), where
    *    `binding` is the "remote binding" which
    */
-  can.Construct("GGRC.ListLoaders.MappingResult", {
+  can.Construct.extend("GGRC.ListLoaders.MappingResult", {
   }, {
       init: function (instance, mappings, binding) {
         if (!mappings) {
@@ -209,7 +210,7 @@
 
   /*  GGRC.ListLoaders.ListBinding
    */
-  can.Construct("GGRC.ListLoaders.ListBinding", {
+  can.Construct.extend("GGRC.ListLoaders.ListBinding", {
   }, {
       init: function (instance, loader) {
         this.instance = instance;
@@ -264,7 +265,7 @@
       }
   });
 
-  can.Construct("GGRC.ListLoaders.BaseListLoader", {
+  can.Construct.extend("GGRC.ListLoaders.BaseListLoader", {
       binding_factory: function (instance, loader) {
         return new GGRC.ListLoaders.ListBinding(instance, loader);
       }
@@ -283,18 +284,25 @@
       },
 
       find_result_by_instance: function (result, list) {
-        var i
-          , found_result = null;
+        var len = list.length;
+        var found_result = null;
+        var instance = result.instance;
+        var needle = instance.id + '-' + instance.constructor.shortName;
 
-        for (i=0; !found_result && i<list.length; i++) {
-          old_result = list[i];
-          if (old_result.instance.id == result.instance.id
-              && old_result.instance.constructor.shortName
-                  == result.instance.constructor.shortName) {
+        if (list._cache && list._cache[needle]) {
+          return list._cache[needle];
+        }
+        list._cache = {};
+        while (len-- && !found_result) {
+          old_result = list[len];
+          list._cache[old_result.instance.id + '-' + old_result.instance.constructor.shortName] = old_result;
+          if (old_result.instance.id === result.instance.id &&
+              old_result.instance.constructor.shortName ===
+              result.instance.constructor.shortName) {
             found_result = old_result;
+            break;
           }
         }
-
         return found_result;
       },
 
@@ -338,11 +346,55 @@
       },
 
       insert_results: function (binding, results) {
-        var self = this
-          , all_binding_results = []
-          , new_instance_results = []
-          , instances_to_refresh = []
-          ;
+        var all_binding_results = [];
+        var new_instance_results = [];
+        var instances_to_refresh = [];
+        var len = results.length;
+        var mapping_attr;
+        var new_result;
+        var found_result;
+        var self = this;
+
+        // function getResult(result, binding, list) {
+        //   var needle = self.find_result_by_instance(result, binding.list);
+
+        //   if (!needle) {
+        //     if (binding.pending_list) {
+        //       needle = self.find_result_by_instance(result, binding.pending_list);
+        //     }
+        //     if (!needle) {
+        //       needle = self.find_result_by_instance(result, list);
+        //     }
+        //   }
+        //   return needle;
+        // }
+
+        // while (len--) {
+        //   new_result = results[len];
+        //   found_result = getResult(new_result, binding, new_instance_results);
+
+        //   if (found_result) {
+        //     if (this.is_duplicate_result(found_result, new_result)) {
+        //       return;
+        //     }
+        //     mapping_attr = found_result.mappings;
+
+        //     can.each(new_result.mappings, function (mapping) {
+        //       if (mapping_attr.indexOf && mapping_attr.indexOf(mapping) === -1) {
+        //         found_result.insert_mapping(mapping);
+        //         instances_to_refresh.push(new_result.instance);
+        //       }
+        //     });
+
+        //     all_binding_results.push(found_result);
+        //   } else {
+        //     found_result = this.make_result(new_result.instance, new_result.mappings, binding);
+        //     new_instance_results.push(found_result);
+        //     instances_to_refresh.push(new_result.instance);
+
+        //     all_binding_results.push(found_result);
+        //   }
+        // }
 
         can.each(results, function (new_result) {
           var found_result = null;
@@ -1550,13 +1602,9 @@
       }
 
     , insert_instances_from_mappings: function (binding, mappings) {
-        var self = this
-          , new_results
-          ;
-
-        new_results = can.map(can.makeArray(mappings), function (mapping) {
-          return self.get_result_from_mapping(binding, mapping);
-        });
+        var new_results = can.map(mappings, function (mapping) {
+          return this.get_result_from_mapping(binding, mapping);
+        }.bind(this));
         this.insert_results(binding, new_results);
       }
 

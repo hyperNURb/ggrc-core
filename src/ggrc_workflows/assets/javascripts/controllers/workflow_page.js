@@ -7,7 +7,7 @@
 
 
 
-  can.Control("GGRC.Controllers.WorkflowPage", {
+  can.Control.extend("GGRC.Controllers.WorkflowPage", {
     defaults: {
     }
   }, {

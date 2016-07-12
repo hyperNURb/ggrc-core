@@ -5,7 +5,7 @@
 
 (function(can, $) {
 
-can.Control("GGRC.Controllers.InfoWidget", {
+can.Control.extend("GGRC.Controllers.InfoWidget", {
   defaults : {
     model : null,
     instance : null,

@@ -33,7 +33,7 @@
       }
     }
   */
-  can.Construct("GGRC.Mappings", {
+  can.Construct.extend("GGRC.Mappings", {
     // Convenience properties for building mappings types.
     Proxy: Proxy,
     Direct: Direct,

@@ -3,7 +3,7 @@
     Licensed under http://www.apache.org/licenses/LICENSE-2.0 <see LICENSE file>
 */
 (function(can) {
-  can.Construct("PersistentNotifier", {
+  can.Construct.extend("PersistentNotifier", {
     defaults: {
       one_time_cbs: true,
       while_queue_has_elements: function() {},

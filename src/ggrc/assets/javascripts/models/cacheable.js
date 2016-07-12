@@ -107,7 +107,7 @@
     };
   }
 
-can.Model("can.Model.Cacheable", {
+can.Model.extend("can.Model.Cacheable", {
 
   root_object : "",
   filter_keys: ["assignee", "company", "contact", "description",
@@ -200,15 +200,15 @@ can.Model("can.Model.Cacheable", {
               ;
             start = Date.now();
             while(sourceData.length > index && (Date.now() - start) < ms) {
-              can.Observe.startBatch();
+              can.batch.start();
               item = sourceData[index];
               index = index + 1;
               instances.push.apply(instances, self.models([item]));
-              can.Observe.stopBatch();
+              can.batch.stop();
             }
-            can.Observe.startBatch();
+            can.batch.start();
             obsList.push.apply(obsList, instances);
-            can.Observe.stopBatch();
+            can.batch.stop();
           }
 
           // Trigger a setTimeout loop to modelize remaining objects
@@ -818,17 +818,17 @@ can.Model("can.Model.Cacheable", {
     }
   }
 
-  , computed_errors : can.compute(function() {
+  , computed_errors: function() {
       var errors = this.errors();
       if(this.attr("_suppress_errors")) {
         return null;
       } else {
         return errors;
       }
-    })
-  , computed_unsuppressed_errors : can.compute(function() {
+    }
+  , computed_unsuppressed_errors: function() {
     return this.errors();
-  }),
+  },
   get_list_counter: function (name) {
     var binding = this.get_binding(name);
     if (!binding) {

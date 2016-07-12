@@ -46,7 +46,7 @@
       return (instance.has_binding(plural) ? '' : 'related_') + plural;
     },
     model_from_type: function (type) {
-      var types = _.reduce(_.values(this.types()), function (memo, val) {
+      var types = _.reduce(_.values(this.attr('types')), function (memo, val) {
         if (val.items) {
           return memo.concat(val.items);
         }

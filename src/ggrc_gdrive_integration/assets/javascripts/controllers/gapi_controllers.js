@@ -41,7 +41,7 @@
 
   window.oauth_dfd = new $.Deferred();
 
-  can.Control("GGRC.Controllers.GAPI", {
+  can.Control.extend("GGRC.Controllers.GAPI", {
     canonical_instance : null
     , o2dfd : null
     , drivedfd : null

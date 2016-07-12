@@ -6,7 +6,7 @@
 (function (can, $, GGRC) {
   'use strict';
 
-  can.Control('GGRC.Controllers.Comments', {
+  can.Control.extend('GGRC.Controllers.Comments', {
   }, {
     _create_relationship: function (source, destination) {
       if (!destination) {

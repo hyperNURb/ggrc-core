@@ -53,7 +53,7 @@
     }, 2000); // 2000 is a magic number that feels nice in the UI
   };
 
-  var Controller = can.Control({
+  var Controller = can.Control.extend({
     "{CMS.Models.Relationship} created": function(model, ev, instance) {
       if (instance instanceof CMS.Models.Relationship) {
         var limit_exceeded = instance.extras && instance.extras.automapping_limit_exceeded;

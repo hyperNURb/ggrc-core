@@ -4,7 +4,7 @@
 */
 
 (function (can, $, Generator) {
-  can.Control('CMS.Controllers.MockupTreeView', {
+  can.Control.extend('CMS.Controllers.MockupTreeView', {
   }, {
     init: function (el, opts) {
       can.each(this.options.instance.children, function (child) {
@@ -90,7 +90,7 @@
     }
   });
 
-  can.Control('CMS.Controllers.MockupTreeItem', {
+  can.Control.extend('CMS.Controllers.MockupTreeItem', {
     defaults: {
       templates: {
         task: '/static/mustache/mockup_base_templates/tree_item_task.mustache',

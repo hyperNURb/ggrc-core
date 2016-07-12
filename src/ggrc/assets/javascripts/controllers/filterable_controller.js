@@ -7,7 +7,7 @@
 
 (function(can, $) {
 
-can.Control("CMS.Controllers.Filterable", {
+can.Control.extend("CMS.Controllers.Filterable", {
   defaults : {
     filterable_items_selector : "[data-model]"
     , spinner_while_filtering : false

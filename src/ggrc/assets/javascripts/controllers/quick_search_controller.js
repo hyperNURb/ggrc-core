@@ -82,13 +82,13 @@ CMS.Controllers.Filterable("CMS.Controllers.QuickSearch", {
           view_data.attr('all_items', data);
           view_data.attr('filtered_items', data.slice(0));
           if($tab.is("li.active a")) {
-            can.Observe.startBatch();
+            can.batch.start();
             if(that.options.limit != null) {
               view_data.attr('list').replace(data.slice(0, that.options.limit));
             } else {
               view_data.attr('list', data);
             }
-            can.Observe.stopBatch();
+            can.batch.stop();
             $pane.trigger("loaded", xhrs[$pane.attr("id")], $tab.data("list"));
           } else {
             GGRC.queue_event(function() {
@@ -182,7 +182,7 @@ CMS.Controllers.Filterable("CMS.Controllers.QuickSearch", {
   }
 });
 
-can.Control("CMS.Controllers.LHN", {
+can.Control.extend("CMS.Controllers.LHN", {
     defaults: {
     }
 }, {
@@ -560,7 +560,7 @@ can.Control("CMS.Controllers.LHN", {
 });
 
 
-can.Control("CMS.Controllers.InfiniteScroll", {
+can.Control.extend("CMS.Controllers.InfiniteScroll", {
     defaults: {
     }
 }, {
@@ -622,7 +622,7 @@ can.Control("CMS.Controllers.InfiniteScroll", {
 });
 
 
-can.Control("CMS.Controllers.LHN_Search", {
+can.Control.extend("CMS.Controllers.LHN_Search", {
     defaults : {
         list_view : GGRC.mustache_path + "/base_objects/search_result.mustache"
       , actions_view : GGRC.mustache_path + "/base_objects/search_actions.mustache"
@@ -1283,7 +1283,7 @@ can.Control("CMS.Controllers.LHN_Search", {
 });
 
 
-can.Control("CMS.Controllers.LHN_Tooltips", {
+can.Control.extend("CMS.Controllers.LHN_Tooltips", {
     defaults : {
         tooltip_view: GGRC.mustache_path + "/base_objects/extended_info.mustache"
       , trigger_selector: ".show-extended"

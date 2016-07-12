@@ -4,7 +4,7 @@
 */
 
 (function (can) {
-  can.Construct('can.Model.Mixin', {
+  can.Construct.extend('can.Model.Mixin', {
     extend: function (fullName, klass, proto) {
       var tempname;
       var parts;

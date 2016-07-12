@@ -52,6 +52,9 @@
         {{> /static/mustache/selectors/object_selector_option_items.mustache}}
       {{/if}}
     </ul>
+    {{#options}}
+      {{log .}}
+    {{/options}}
     <div class="row-fluid centered clearfix">
       <spinner size="large" toggle="page_loading"></spinner>
     </div>

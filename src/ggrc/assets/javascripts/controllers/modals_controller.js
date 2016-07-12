@@ -4,7 +4,7 @@
 */
 
 (function (can, $) {
-can.Control('GGRC.Controllers.Modals', {
+can.Control.extend('GGRC.Controllers.Modals', {
   BUTTON_VIEW_DONE: GGRC.mustache_path + '/modals/done_buttons.mustache',
   BUTTON_VIEW_CLOSE: GGRC.mustache_path + '/modals/close_buttons.mustache',
   BUTTON_VIEW_SAVE_CANCEL:
@@ -330,32 +330,32 @@ can.Control('GGRC.Controllers.Modals', {
   }
 
   , setup_wysihtml5 : function() {
-    if (!this.element) {
-      return;
-    }
-    this.element.find('.wysihtml5').each(function() {
-      $(this).cms_wysihtml5();
-    });
+    // if (!this.element) {
+    //   return;
+    // }
+    // this.element.find('.wysihtml5').each(function() {
+    //   $(this).cms_wysihtml5();
+    // });
   }
 
   , "input:not(isolate-form input), textarea:not(isolate-form textarea), select:not(isolate-form select) change" : function(el, ev) {
-      this.options.instance.removeAttr("_suppress_errors");
+      // this.options.instance.removeAttr("_suppress_errors");
       // Set the value if it isn't a search field
-      if (!el.hasClass("search-icon") ||
-          el.is("[null-if-empty]") &&
-          (!el.val() || !el.val().length)
-      ) {
-        this.set_value_from_element(el);
-      }
+      // if (!el.hasClass("search-icon") ||
+      //     el.is("[null-if-empty]") &&
+      //     (!el.val() || !el.val().length)
+      // ) {
+      //   this.set_value_from_element(el);
+      // }
   }
   , "input:not([data-lookup], isolate-form *), textarea keyup": function (el, ev) {
     // TODO: If statement doesn't work properly. This is the right one:
     //       if (el.attr('value').length ||
     //          (typeof el.attr('value') !== 'undefined' && el.val().length)) {
-    if (el.prop('value').length === 0 ||
-       (typeof el.attr('value') !== 'undefined' && !el.attr('value').length)) {
-      this.set_value_from_element(el);
-    }
+    // if (el.prop('value').length === 0 ||
+    //    (typeof el.attr('value') !== 'undefined' && !el.attr('value').length)) {
+    //   this.set_value_from_element(el);
+    // }
   },
   serialize_form: function () {
     var $form = this.options.$content.find("form");

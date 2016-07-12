@@ -3,7 +3,7 @@
     Licensed under http://www.apache.org/licenses/LICENSE-2.0 <see LICENSE file>
 */
 
-can.Control("CMS.Controllers.InfoPin", {
+can.Control.extend("CMS.Controllers.InfoPin", {
   defaults: {
     view: GGRC.mustache_path + "/base_objects/info.mustache"
   }

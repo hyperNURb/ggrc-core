@@ -4,7 +4,7 @@
 */
 
 (function (can, $, Generator) {
-  can.Control('CMS.Controllers.MockupInfoPanel', {
+  can.Control.extend('CMS.Controllers.MockupInfoPanel', {
     defaults: {
       view: '/static/mustache/mockup_base_templates/info_panel.mustache',
       slide: 240,
@@ -105,7 +105,7 @@
     }
   });
 
-  can.Control('CMS.Controllers.MockupInfoView', {
+  can.Control.extend('CMS.Controllers.MockupInfoView', {
     defaults: {
       comment_attachments: new can.List(),
       templates: {

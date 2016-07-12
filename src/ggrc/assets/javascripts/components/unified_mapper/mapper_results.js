@@ -17,9 +17,9 @@
       page: 0,
       page_loading: false,
       select_state: false,
-      loading_or_saving: can.compute(function () {
+      loading_or_saving: function () {
         return this.attr('page_loading') || this.attr('mapper.is_saving');
-      }),
+      },
       isRelevantToCurrent: function () {
         var relevant = this.attr('mapper.relevant');
         var instance = GGRC.page_instance();
@@ -160,6 +160,7 @@
             function (models) {
               this.scope.attr('mapper.page_loading', false);
               this.scope.attr('page', nextPage);
+              console.log(options, can.map(models, this.getItem.bind(this)));
               options.push.apply(
                 options,
                 can.map(models, this.getItem.bind(this))

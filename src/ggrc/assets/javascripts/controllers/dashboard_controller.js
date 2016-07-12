@@ -4,7 +4,7 @@
 */
 
 (function (can, $) {
-  can.Control('CMS.Controllers.Dashboard', {
+  can.Control.extend('CMS.Controllers.Dashboard', {
     defaults: {
       widget_descriptors: null
     }
@@ -251,7 +251,7 @@
     }
   });
 
-  can.Control('CMS.Controllers.InnerNav', {
+  can.Control.extend('CMS.Controllers.InnerNav', {
     defaults: {
       internav_view: '/static/mustache/dashboard/internav_list.mustache',
       pin_view: '.pin-content',

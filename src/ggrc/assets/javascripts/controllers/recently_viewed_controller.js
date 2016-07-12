@@ -5,7 +5,7 @@
 
 (function(can, $) {
 
-can.Control("GGRC.Controllers.RecentlyViewed", {
+can.Control.extend("GGRC.Controllers.RecentlyViewed", {
   defaults : {
     list_view : GGRC.mustache_path + "/dashboard/recently_viewed_list.mustache"
     , max_history : 10
