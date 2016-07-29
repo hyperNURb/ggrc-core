@@ -47,7 +47,7 @@
       }
     },
     events: {
-      inserted: function () {
+      init: function () {
         var element = this.element.find('.datepicker__calendar');
         var date = this.getDate(this.scope.date);
 
