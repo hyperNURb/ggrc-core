@@ -57,6 +57,32 @@
         this.attr('context.isEdit', false);
         this.attr('context.value', this.attr('_value'));
       },
+      getCAVal: function (value) {
+        var type = this.type;
+
+        if (type === 'checkbox') {
+          value = value ? 1 : 0;
+        }
+        if (type === 'person') {
+          value = value ? ('Person:' + value.id) : value;
+        }
+        if (type === 'dropdown') {
+          if (value && value === '') {
+            value = null;
+          }
+        }
+        if (type === 'text') {
+          if (_.isEmpty($.trim($(value).text()))) {
+            value = null;
+          }
+        }
+        if (type === 'input') {
+          if (_.isEmpty($.trim(value))) {
+            value = null;
+          }
+        }
+        return value;
+      },
       onSave: function (ctx, el, ev) {
         var caid = this.attr('caId');
         var property = this.attr('property');
@@ -85,7 +111,21 @@
         }
 
         this.attr('context.isEdit', false);
+        if (this.attr('caId')) {
+          value = this.getCAVal(value);
+        }
         if (oldValue === value) {
+          if (this.caId && _.contains(['input', 'text'], type)) {
+            this.attr('context.value', value);
+          }
+          return;
+        }
+
+        if (this.mandatory && _.isEmpty(value)) {
+          this.attr('context.value', oldValue);
+          $(document.body).trigger('ajax:flash', {
+            error: 'Mandatory field shouldn\'t be empty'
+          });
           return;
         }
 
@@ -93,17 +133,6 @@
         this.attr('isSaving', true);
         instance.refresh().then(function () {
           if (this.attr('caId')) {
-            if (type === 'checkbox') {
-              value = value ? 1 : 0;
-            }
-            if (type === 'person') {
-              value = value ? ('Person:' + value.id) : value;
-            }
-            if (type === 'dropdown') {
-              if (value && value === '') {
-                value = undefined;
-              }
-            }
             instance.attr('custom_attributes.' + caid, value);
           } else {
             instance.attr(property, value);
