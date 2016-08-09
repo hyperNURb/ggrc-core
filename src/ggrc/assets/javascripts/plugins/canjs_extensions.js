@@ -91,4 +91,107 @@
     }
     return string.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
   };
+
+    can.Observe.prototype.stub = function() {
+    if (!(this instanceof can.Model || this instanceof can.Stub))
+      console.debug('.stub() called on non-stub, non-instance object', this);
+
+    var type, id, stub;
+
+    if (this instanceof can.Stub) {
+      return this;
+    }
+
+    if (this instanceof can.Model) {
+      type = this.constructor.shortName;
+    } else {
+      type = this.type;
+    }
+
+    if (this.constructor.id) {
+      id = this[this.constructor.id];
+    } else {
+      id = this.id;
+    }
+
+    if (!id && id !== 0) {
+      return null;
+    }
+
+    return can.Stub.get_or_create({
+      id: id,
+      href: this.selfLink || this.href,
+      type: type
+    });
+  };
+
+  can.Observe('can.Stub', {
+    get_or_create: function (obj) {
+      var id = obj.id;
+      var stub;
+      var type = obj.type;
+
+      CMS.Models.stub_cache = CMS.Models.stub_cache || {};
+      CMS.Models.stub_cache[type] = CMS.Models.stub_cache[type] || {};
+      if (!CMS.Models.stub_cache[type][id]) {
+        stub = new can.Stub(obj);
+        CMS.Models.stub_cache[type][id] = stub;
+      }
+      return CMS.Models.stub_cache[type][id];
+    }
+  }, {
+    init: function () {
+      var that = this;
+      this._super.apply(this, arguments);
+      this._instance().bind('destroyed', function (ev) {
+        // Trigger propagating `change` event to convey `stub-destroyed` message
+        can.trigger(
+          that, 'change', ['stub_destroyed', 'stub_destroyed', that, null]);
+        delete CMS.Models.stub_cache[that.type][that.id];
+      });
+    },
+
+    _model: function () {
+      return CMS.Models[this.type] || GGRC.Models[this.type];
+    },
+
+    _instance: function () {
+      if (!this.__instance) {
+        this.__instance = this._model().model(this);
+      }
+      return this.__instance;
+    }
+  });
+
+  can.Observe.List.prototype.stubs = function () {
+    return new can.Observe.List(can.map(this, function (obj) {
+      return obj.stub();
+    }));
+  };
+
+  can.Observe.prototype.reify = function () {
+    var type, model;
+
+    if (this instanceof can.Model) {
+      return this;
+    }
+    if (!(this instanceof can.Stub)) {
+      console.debug('`reify()` called on non-stub, non-instance object', this);
+    }
+
+    type = this.type;
+    model = CMS.Models[type] || GGRC.Models[type];
+
+    if (!model) {
+      console.debug('`reify()` called with unrecognized type', this);
+    } else {
+      return model.model(this);
+    }
+  };
+
+  can.Observe.List.prototype.reify = function () {
+    return new can.Observe.List(can.map(this, function (obj) {
+      return obj.reify();
+    }));
+  };
 })(jQuery, can);
