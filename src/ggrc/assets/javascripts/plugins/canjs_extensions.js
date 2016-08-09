@@ -92,11 +92,13 @@
     return string.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
   };
 
-    can.Observe.prototype.stub = function() {
-    if (!(this instanceof can.Model || this instanceof can.Stub))
-      console.debug('.stub() called on non-stub, non-instance object', this);
+  can.Observe.prototype.stub = function () {
+    var type;
+    var id;
 
-    var type, id, stub;
+    if (!(this instanceof can.Model || this instanceof can.Stub)) {
+      console.debug('.stub() called on non-stub, non-instance object', this);
+    }
 
     if (this instanceof can.Stub) {
       return this;
@@ -170,7 +172,8 @@
   };
 
   can.Observe.prototype.reify = function () {
-    var type, model;
+    var type;
+    var model;
 
     if (this instanceof can.Model) {
       return this;
@@ -184,9 +187,8 @@
 
     if (!model) {
       console.debug('`reify()` called with unrecognized type', this);
-    } else {
-      return model.model(this);
     }
+    return model.model(this);
   };
 
   can.Observe.List.prototype.reify = function () {
