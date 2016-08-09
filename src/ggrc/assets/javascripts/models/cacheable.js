@@ -6,6 +6,7 @@
 // = require can.jquery-all
 
 (function (can) {
+  var oldAttr;
   var makeFindRelated = function (thistype, othertype) {
     return function (params) {
       if (!params[thistype + '_type']) {
@@ -1413,16 +1414,14 @@ can.Model('can.Model.Cacheable', {
   }
 });
 
-  _old_attr = can.Observe.prototype.attr;
-  can.Observe.prototype.attr = function(key, val) {
+  oldAttr = can.Model.Cacheable.prototype.attr;
+  can.Model.Cacheable.prototype.attr = function (key, val) {
     if (key instanceof can.Observe) {
       if (arguments[0] === this) {
         return this;
-      } else {
-        return _old_attr.apply(this, [key.serialize()]);
       }
-    } else {
-      return _old_attr.apply(this, arguments);
+      return oldAttr.apply(this, [key.serialize()]);
     }
+    return oldAttr.apply(this, arguments);
   };
 })(window.can);
