@@ -13,6 +13,7 @@
     tag: 'ca-object-modal-content',
     template: tpl,
     scope: {
+      instance: null,
       content: {
         title: null,
         value: null,
