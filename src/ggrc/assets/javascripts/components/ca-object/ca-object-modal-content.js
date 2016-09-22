@@ -23,7 +23,7 @@
     },
     helpers: {
       renderFieldValue: function (value) {
-        value = value();
+        value = Mustache.resolve(value);
         return value || '<span class="empty-message">None</span>';
       }
     }
