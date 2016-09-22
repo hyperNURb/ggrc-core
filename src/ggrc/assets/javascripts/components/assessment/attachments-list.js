@@ -19,6 +19,18 @@
     scope: {
       instance: null
     },
+    helpers: {
+      showNotification: function (options) {
+        var instance = this.instance;
+        var binding = instance.class.info_pane_options.evidence.mapping;
+        var mapping = instance.get_mapping(binding);
+
+        if (instance._mandatory_attachment_msg &&
+            mapping.length < instance._mandatory_attachment_count) {
+          return options.fn(options.contexts);
+        }
+        return options.inverse();
+      }
     }
   });
 })(window.GGRC, window.can);

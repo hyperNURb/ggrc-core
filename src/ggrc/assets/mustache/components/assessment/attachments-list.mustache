@@ -7,12 +7,12 @@
   {{#is_allowed 'update' instance context='for'}}
     {{{render_hooks "Request.gdrive_evidence_storage"}}}
   {{/is_allowed}}
-{{^if_null instance._mandatory_attachment_msg}}
+{{#showNotification}}
   <div class="alert alert-info alert-dismissible" role="alert">
     {{instance._mandatory_attachment_msg}}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">&times;</button>
   </div>
-{{/if_null}}
+{{/showNotification}}
 <mapping-tree-view
   parent-instance="instance"
   mapping="instance.class.info_pane_options.evidence.mapping"

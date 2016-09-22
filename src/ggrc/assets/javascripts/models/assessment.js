@@ -237,12 +237,15 @@
       } else {
         this.removeAttr('_mandatory_comment_msg');
       }
-
       if (needed.attachment.length) {
-        this.attr('_mandatory_attachment_msg',
-          'Evidence required by: ' + needed.attachment.join(', '));
+        this.attr({
+          _mandatory_attachment_msg: 'Evidence required by: ' +
+            needed.attachment.join(', '),
+          _mandatory_attachment_count: needed.attachment.length
+        });
       } else {
         this.removeAttr('_mandatory_attachment_msg');
+        this.removeAttr('_mandatory_attachment_count');
       }
 
       if (needed.value.length) {
